@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user details and preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "theme": { "type": "string", "enum": ["light", "dark", "sepia"] },
+        "fontSize": { "type": "number" },
+        "readingStreak": { "type": "number" },
+        "lastReadDate": { "type": "string", "format": "date-time" },
+        "totalReadCount": { "type": "number" }
+      },
+      "required": ["userId", "email"]
+    },
+    "Favorite": {
+      "title": "Favorite Poem",
+      "description": "Links a user to a favorite poem.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "poemId": { "type": "string" },
+        "savedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "poemId"]
+    },
+    "Note": {
+      "title": "Poem Note",
+      "description": "User's personal notes on a specific poem.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "poemId": { "type": "string" },
+        "content": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "poemId", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Individual user profiles."
+    },
+    "/users/{userId}/favorites/{poemId}": {
+      "schema": "Favorite",
+      "description": "User's favorite poems."
+    },
+    "/users/{userId}/notes/{poemId}": {
+      "schema": "Note",
+      "description": "User's personal poem notes."
+    }
+  }
+}

@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+Kannada:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif Kannada", "Playfair Display", serif;
+  
+  --color-paper-light: #FDFBF7;
+  --color-paper-dark: #121212;
+  --color-paper-sepia: #F4ECD8;
+  
+  --color-ink-light: #1A1A1A;
+  --color-ink-dark: #E4E4E4;
+  --color-ink-sepia: #433422;
+}
+
+@layer base {
+  :root {
+    --bg-current: var(--color-paper-light);
+    --ink-current: var(--color-ink-light);
+  }
+
+  .theme-dark {
+    --bg-current: var(--color-paper-dark);
+    --ink-current: var(--color-ink-dark);
+  }
+
+  .theme-sepia {
+    --bg-current: var(--color-paper-sepia);
+    --ink-current: var(--color-ink-sepia);
+  }
+
+  body {
+    @apply font-sans transition-colors duration-300;
+    background-color: var(--bg-current);
+    color: var(--ink-current);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    overflow-x: hidden;
+  }
+  
+  .kannada-text {
+    @apply font-serif leading-relaxed;
+    user-select: text; /* Allow selecting poem text specifically */
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .paper-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+}

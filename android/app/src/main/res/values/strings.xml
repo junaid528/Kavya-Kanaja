@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Kavya-Kanaja</string>
+    <string name="title_activity_main">Kavya-Kanaja</string>
+    <string name="package_name">com.kavyakanaja.app</string>
+    <string name="custom_url_scheme">com.kavyakanaja.app</string>
+</resources>

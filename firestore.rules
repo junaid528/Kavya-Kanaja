@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Allow connection testing
+    match /test/connection {
+      allow get: if true;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUserProfile(data) {
+      return data.userId is string &&
+             data.email is string &&
+             data.email.size() <= 256;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && 
+                      request.resource.data.keys().hasAll(['userId', 'email']) &&
+                      isValidUserProfile(request.resource.data);
+      allow update: if isOwner(userId) && 
+                      isValidUserProfile(request.resource.data) &&
+                      request.resource.data.diff(resource.data).affectedKeys()
+                      .hasOnly(['name', 'theme', 'fontSize', 'readingStreak', 'lastReadDate', 'totalReadCount', 'lastReadPoemId', 'dailyGoal']);
+      
+      // Favorites subcollection
+      match /favorites/{poemId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Notes subcollection
+      match /notes/{poemId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}
